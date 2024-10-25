@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "esp_rom_sys.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "ina219.h"
@@ -23,9 +24,9 @@ void app_main(void)
         .bus_range=INA219_BUS_VOL_RANGE_12V,
 
         .clk_speed=400*1000,
-        .dev_addr=0x00,
-        .r_shunt_ohm=0.001,
-        .i_max_a=5
+        .dev_addr=0x40,
+        .r_shunt_ohm=0.01f,
+        .i_max_a=3.5f
     };
 
     ina219_dev_t dev=NULL;
@@ -35,6 +36,6 @@ void app_main(void)
     while(1){
         ina219_read(dev,INA219_VAL_POW,&power);
         printf("%f\n",power);
-        vTaskDelay(pdMS_TO_TICKS(5));
+        esp_rom_delay_us(100);
     }
 }
